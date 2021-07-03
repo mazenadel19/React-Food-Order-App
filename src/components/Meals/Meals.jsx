@@ -5,8 +5,8 @@ import AvailableMeals from './AvailableMeals'
 const Meals = () => {
 	return (
 		<>
-			<MealsSummary></MealsSummary>
-			<AvailableMeals></AvailableMeals>
+			<MealsSummary />
+			<AvailableMeals />
 		</>
 	)
 }
