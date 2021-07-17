@@ -13,28 +13,28 @@ const AvailableMeals = () => {
 			const response = await fetch(
 				'https://food-app-b7b46-default-rtdb.europe-west1.firebasedatabase.app/meals.json',
 			)
-			if (!response.ok) {
+			if (response.status >= 200 && response.status <= 299) {
+				const responseData = await response.json()
+
+				const loadMeals = []
+
+				for (const key in responseData) {
+					loadMeals.push({
+						id: key,
+						name: responseData[key].name,
+						price: responseData[key].price,
+						description: responseData[key].description,
+					})
+				}
+
+				setMeals(loadMeals)
+				setIsLoading(false)
+			} else {
+				console.log(response.status, response.statusText)
 				throw new Error('something went wrong!!!')
 			}
-
-			const responseData = await response.json()
-
-			const loadMeals = []
-
-			for (const key in responseData) {
-				loadMeals.push({
-					id: key,
-					name: responseData[key].name,
-					price: responseData[key].price,
-					description: responseData[key].description,
-				})
-			}
-
-			setMeals(loadMeals)
-			setIsLoading(false)
 		}
-
-		//returns a promise
+		//fetchMeals returns a promise
 		fetchMeals().catch(e => {
 			setIsLoading(false)
 			setHttpError(e.message)
