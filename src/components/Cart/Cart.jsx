@@ -8,6 +8,8 @@ import classes from './Cart.module.css'
 
 const Cart = props => {
 	const [isCheckout, setIsCheckout] = useState(false)
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [didSubmit, setDidSubmit] = useState(false)
 
 	const cartCtx = useContext(CartContext)
 
@@ -41,6 +43,24 @@ const Cart = props => {
 		setIsCheckout(true)
 	}
 
+	const submitOrderHandler = async userData => {
+		setIsSubmitting(true)
+		setDidSubmit(false)
+		await fetch(
+			'https://food-app-b7b46-default-rtdb.europe-west1.firebasedatabase.app/orders.json',
+			{
+				method: 'POST',
+				body: JSON.stringify({
+					user: userData,
+					orderItem: cartCtx.items,
+				}),
+			},
+		)
+		console.log('sent request')
+		setIsSubmitting(false)
+		setDidSubmit(true)
+	}
+
 	const modalActions = (
 		<div className={classes.actions}>
 			<button className={classes['button--alt']} onClick={props.hideTheModal}>
@@ -54,15 +74,40 @@ const Cart = props => {
 		</div>
 	)
 
-	return (
-		<Modal hideTheModal={props.hideTheModal}>
+	const cartModalContent = (
+		<>
 			{cartItems}
 			<div className={classes.total}>
 				<span>Total Amount</span>
 				<span>{totalAmount}</span>
 			</div>
-			{isCheckout && <Checkout hideTheModal={props.hideTheModal} />}
+			{isCheckout && (
+				<Checkout
+					onConfirm={submitOrderHandler}
+					hideTheModal={props.hideTheModal}
+				/>
+			)}
 			{!isCheckout && modalActions}
+		</>
+	)
+
+	const isSubmittingModalContent = <p>Sending order data...</p>
+	const didSubmitModalContent = (
+		<>
+			<p>SUCCESSFULLY SENT YOUR ORDER !!!</p>
+			<div className={classes.actions}>
+				<button className={classes.button} onClick={props.hideTheModal}>
+					Close
+				</button>
+			</div>
+		</>
+	)
+
+	return (
+		<Modal hideTheModal={props.hideTheModal}>
+			{!isSubmitting && !didSubmit && cartModalContent}
+			{isSubmitting && !didSubmit && isSubmittingModalContent}
+			{!isSubmitting && didSubmit && didSubmitModalContent}
 		</Modal>
 	)
 }

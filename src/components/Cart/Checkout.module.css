@@ -1,11 +1,16 @@
 .form {
 	margin: 1rem 0;
-	height: 19rem;
-	overflow: scroll;
+}
+
+.formWrapper {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
 }
 
 .control {
 	margin-bottom: 0.5rem;
+	width: 45%;
 }
 
 .control label {
@@ -61,12 +66,10 @@
 	background-color: #7a2706;
 }
 
-.invalid label {
-	color: #aa0b20;
-}
 
-.invalid p {
-	color: #aa0b20;
+
+.invalid small {
+	color: #770202;
 }
 
 .invalid input {

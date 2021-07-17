@@ -39,10 +39,18 @@ const Checkout = props => {
 		const isValidForm =
 			isValidName && isValidStreet && isValidPostal && isValidCity
 
-		console.log(isValidForm)
+		console.log('isValidForm', isValidForm)
 		if (!isValidForm) {
+			return
 		}
+
 		//submit the form
+		props.onConfirm({
+			name: enteredName,
+			street: enteredStreet,
+			postal: enteredPostal,
+			city: enteredCity,
+		})
 	}
 
 	const nameControlClasses = !formInputsValidity.name && classes.invalid
@@ -52,27 +60,29 @@ const Checkout = props => {
 
 	return (
 		<form className={classes.form} onSubmit={submitHandler}>
-			<div className={`${classes.control} ${nameControlClasses}`}>
-				<label htmlFor='name'>Your Name</label>
-				<input type='text' id='name' ref={nameInputRef} />
-				{!formInputsValidity.name && <p>Your Name Field Can't Be Empty</p>}
-			</div>
-			<div className={`${classes.control} ${streetControlClasses}`}>
-				<label htmlFor='street'>Street</label>
-				<input type='text' id='street' ref={streetInputRef} />
-				{!formInputsValidity.street && <p>Street Field Can't Be Empty</p>}
-			</div>
-			<div className={`${classes.control} ${postalControlClasses}`}>
-				<label htmlFor='postal'>Postal Code</label>
-				<input type='text' id='postal' ref={postalInputRef} />
-				{!formInputsValidity.postal && (
-					<p>Postal Code Field Must Have Five Digits</p>
-				)}
-			</div>
-			<div className={`${classes.control} ${cityControlClasses}`}>
-				<label htmlFor='city'>City</label>
-				<input type='text' id='city' ref={cityInputRef} />
-				{!formInputsValidity.city && <p>City Field Can't Be Empty</p>}
+			<div className={classes.formWrapper}>
+				<div className={`${classes.control} ${nameControlClasses}`}>
+					<label htmlFor='name'>Your Name</label>
+					<input type='text' id='name' ref={nameInputRef} />
+					{!formInputsValidity.name && <small>Your Name Field Can't Be Empty</small>}
+				</div>
+				<div className={`${classes.control} ${streetControlClasses}`}>
+					<label htmlFor='street'>Street</label>
+					<input type='text' id='street' ref={streetInputRef} />
+					{!formInputsValidity.street && <small>Street Field Can't Be Empty</small>}
+				</div>
+				<div className={`${classes.control} ${postalControlClasses}`}>
+					<label htmlFor='postal'>Postal Code</label>
+					<input type='text' id='postal' ref={postalInputRef} />
+					{!formInputsValidity.postal && (
+						<small>Postal Code Field Must Have Five Digits</small>
+					)}
+				</div>
+				<div className={`${classes.control} ${cityControlClasses}`}>
+					<label htmlFor='city'>City</label>
+					<input type='text' id='city' ref={cityInputRef} />
+					{!formInputsValidity.city && <small>City Field Can't Be Empty</small>}
+				</div>
 			</div>
 			<div className={classes.actions}>
 				<button type='button' onClick={props.hideTheModal}>
