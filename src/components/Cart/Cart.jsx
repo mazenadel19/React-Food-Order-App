@@ -56,9 +56,9 @@ const Cart = props => {
 				}),
 			},
 		)
-		console.log('sent request')
 		setIsSubmitting(false)
 		setDidSubmit(true)
+		cartCtx.clearCart()
 	}
 
 	const modalActions = (

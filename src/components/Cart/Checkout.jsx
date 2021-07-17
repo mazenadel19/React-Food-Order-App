@@ -39,7 +39,6 @@ const Checkout = props => {
 		const isValidForm =
 			isValidName && isValidStreet && isValidPostal && isValidCity
 
-		console.log('isValidForm', isValidForm)
 		if (!isValidForm) {
 			return
 		}
